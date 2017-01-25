@@ -5,7 +5,8 @@ Reproducible Research Course Project 1
 
 ## Loading and preprocessing the data
 
-```{r loading}
+
+```r
 act<-read.csv("C:/xfmovie/activity.csv",header=T,stringsAsFactors = FALSE)
 act$date<-as.Date(act$date)
 ```
@@ -13,42 +14,55 @@ act$date<-as.Date(act$date)
 
 ## What is mean total number of steps taken per day?
 
-```{r}
+
+```r
 total<-aggregate(act$steps,by=list(act$date),FUN=function(elt) sum(elt,na.rm=TRUE))
 
 # histogram of the total number of steps taken each day
 hist(total$x,main="Total number of steps per day",xlab="Total number of steps",ylim=c(0,30),col="grey30")
+```
 
+![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-1.png)
+
+```r
 med<-median(total$x,na.rm=TRUE)
 ave<-mean(total$x,na.rm=TRUE)
 ```
 
-The median of the total number of steps taken per day is `r med`. The mean of the total number of steps taken per day is `r round(ave)`.
+The median of the total number of steps taken per day is 10395. The mean of the total number of steps taken per day is 9354.
 
 
 ## What is the average daily activity pattern?
 
-```{r}
+
+```r
 ave<-aggregate(act$steps,by=list(act$interval),FUN=function(elt) mean(elt,na.rm=TRUE))
 
 # a time series plot of the 5-minute interval and the average number of steps taken, averaged across all days
 plot(ave$Group.1,ave$x,type="l",xlab="intervels",ylab="average number of steps",main="Average number of steps taken")
+```
+
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png)
+
+```r
 maxstep<-max(ave$x)
 stepmax<-ave$Group.1[which.max(ave$x)]
 ```
 
-The maximum average steps in an interval is `r round(maxstep)` steps at `r stepmax` minutes.
+The maximum average steps in an interval is 206 steps at 835 minutes.
 
 
 ## Imputing missing values
 
-```{r}
+
+```r
 nanum<-sum(is.na(act))
 ```
 
-There are `r nanum` missing values in the data set.
+There are 2304 missing values in the data set.
 
-```{r}
+
+```r
 # use the mean for that 5-minute interval to fill in all of the missing values
 d<-unique(act$date[is.na(act)])
 fullact<-act
@@ -59,18 +73,24 @@ newtotal<-aggregate(fullact$steps,by=list(fullact$date),FUN=function(elt) sum(el
 
 # a histogram of the total number of steps taken each day 
 hist(newtotal$x,main="Total number of steps per day",xlab="Total number of steps",ylim=c(0,30),col="grey30")
+```
+
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
+
+```r
 newmed<-round(median(newtotal$x))
 newave<-round(mean(newtotal$x))
 ```
 
-After filling in all the missing values, the median of the total number of steps taken per day is `r newmed`. The mean of the total number of steps taken per day is `r newave`.
+After filling in all the missing values, the median of the total number of steps taken per day is 1.0766 &times; 10<sup>4</sup>. The mean of the total number of steps taken per day is 1.0766 &times; 10<sup>4</sup>.
 
 With all the missing values filled with the mean for 5-minute intervals, the mean and median both becomes larger than before.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-```{r}
+
+```r
 # I am from China and my computer only supports Chinese. So all the dates on my computer are in Chinese."ĞÇÆÚÁù" is equal to "Saturday" and "ĞÇÆÚÈÕ" is equal to "Sunday"
 fullact$date<-as.Date(fullact$date)
 fullact$week<-"0"
@@ -86,3 +106,5 @@ plot(newave[newave$Group.2=="weekend",]$Group.1,newave[newave$Group.2=="weekend"
 par(op)
 mtext("Weekdays vs Weekends",cex=1.4)  
 ```
+
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
