@@ -1,6 +1,4 @@
----
-output: html_document
----
+
 Reproducible Research Course Project 1
 =====================================
 
@@ -73,7 +71,7 @@ With all the missing values filled with the mean for 5-minute intervals, the mea
 ## Are there differences in activity patterns between weekdays and weekends?
 
 ```{r}
-# I am from China and my computer only supports Chinese. So all the dates on my computer is in Chinese."星期六" is equal to "Saturday" and "星期日" is equal to "Sunday"
+# I am from China and my computer only supports Chinese. So all the dates on my computer are in Chinese."星期六" is equal to "Saturday" and "星期日" is equal to "Sunday"
 fullact$date<-as.Date(fullact$date)
 fullact$week<-"0"
 fullact[which(weekdays(fullact$date)=="星期六"|weekdays(fullact$date)=="星期日"),]$week<-"weekend"
